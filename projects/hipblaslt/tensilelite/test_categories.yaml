@@ -1,0 +1,52 @@
+# Tensilite Test Categories Configuration
+# Aligned with hipBLASLt Jenkins preliminary job and pytest markers in pytest.ini
+
+test_categories:
+  quick:
+    description: "Fast unit tests (target: < 5 min)"
+    pytest_markers:
+      - "unit"
+    exclude_markers: []
+    labels:
+      - "quick"
+      - "unit"
+
+  standard:
+    description: "Common integration tests (target: < 30 min)"
+    pytest_markers:
+      - "common"
+    exclude_markers: []
+    labels:
+      - "standard"
+      - "common"
+
+  comprehensive:
+    description: "Extended test coverage (target: < 4 hours)"
+    pytest_markers:
+      - "common"
+      - "unit"
+    exclude_markers: []
+    labels:
+      - "comprehensive"
+
+  full:
+    description: "Complete test suite"
+    pytest_markers:
+      - "common"
+      - "unit"
+    exclude_markers: []
+    labels:
+      - "full"
+
+execution_settings:
+  default_timeout: 300  # per-test timeout in seconds
+  timeout_multiplier: 1
+  parallel_workers: 4   # --numprocesses for pytest-xdist
+  category_timeouts:
+    quick: 300       # 5 minutes total
+    standard: 1800   # 30 minutes total
+    comprehensive: 14400  # 4 hours total
+    full: 28800      # 8 hours total
+  environment:
+    # Environment variables for test execution
+    TENSILE_ROCM_ASSEMBLER_PATH: "{ROCM_PATH}/bin/clang++"
